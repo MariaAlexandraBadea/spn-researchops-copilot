@@ -15,19 +15,39 @@ from app.schema import DocumentChunk
 SUPPORTED_SUFFIXES = {".pdf", ".py", ".tex", ".md", ".txt", ".csv", ".json", ".yml", ".yaml"}
 
 
-def infer_source_type(path: Path) -> str:
-    suffix = path.suffix.lower()
-    if suffix == ".pdf":
-        return "paper"
-    if suffix == ".py":
-        return "code"
-    if suffix == ".tex":
-        return "latex"
-    if suffix == ".csv":
-        return "table"
-    if suffix in {".json", ".yml", ".yaml"}:
-        return "structured"
-    return "note"
+def iter_supported_files(root: str | Path) -> Iterable[Path]:
+    root = Path(root)
+
+    ignored_dirs = {
+        ".git",
+        "__pycache__",
+        ".ipynb_checkpoints",
+        ".venv",
+        "venv",
+        "env",
+        "node_modules",
+        "data/index",
+        "dist",
+        "build"
+    }
+
+    if root.is_file() and root.suffix.lower() in SUPPORTED_SUFFIXES:
+        yield root
+        return
+
+    for path in root.rglob("*"):
+        if not path.is_file():
+            continue
+
+        if path.suffix.lower() not in SUPPORTED_SUFFIXES:
+            continue
+
+        parts = {p.lower() for p in path.parts}
+
+        if any(ignored in parts for ignored in ignored_dirs):
+            continue
+
+        yield path
 
 
 def iter_supported_files(root: str | Path) -> Iterable[Path]:
