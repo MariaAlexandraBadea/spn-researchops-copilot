@@ -1,0 +1,18 @@
+[
+  {
+    "question": "What is the CNN-GRU-SPN-Gamma architecture?",
+    "expected_keywords": ["cnn", "gru", "spn", "gamma"]
+  },
+  {
+    "question": "What leakage controls are used in preprocessing?",
+    "expected_keywords": ["train", "climatology", "imputation", "target"]
+  },
+  {
+    "question": "Which probabilistic metrics are used?",
+    "expected_keywords": ["crps", "nll", "coverage", "energy"]
+  },
+  {
+    "question": "Generate a model card for the SPN forecasting model.",
+    "expected_keywords": ["model", "data", "metrics", "limitations"]
+  }
+]
